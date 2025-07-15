@@ -7,7 +7,7 @@ const Login = () => {
   async function handleLogin(event){
     event.preventDefault();
     try{
-        const token = await axios.post("http://localhost:3001/api/auth/login",{userName,password})
+        const token = await axios.post("https://springboot1-backend-1.onrender.com/api/auth/login",{userName,password})
         console.log(token);
         alert("Login Successful")
     } catch (e){

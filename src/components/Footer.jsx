@@ -1,11 +1,7 @@
-import React from 'react';
-
 const Footer = () => {
   return (
-    <footer className="footer">
-      © 2025 EMS. All rights reserved. |
-      <a href="#">Privacy Policy</a> |
-      <a href="#">Terms of Service</a>
+    <footer style={{ textAlign: "center", padding: "1rem", color: "#666" }}>
+      <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
     </footer>
   );
 };

@@ -1,17 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../index.css';
-
-const Header = () => {
-  return (
-    <header className="header">
-      <h1 className="header-title">Employee Management System</h1>
-      <div className="header-links">
-        <Link to="/login" className="header-link">Login</Link>
-        <Link to="/register" className="header-link register-link">Register</Link>
-      </div>
-    </header>
-  );
-};
+const Header = ()=>{
+    return(
+        <div>
+            <h1>Employee Management System</h1>
+        </div>
+    )
+}
 
 export default Header;

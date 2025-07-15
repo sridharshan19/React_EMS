@@ -1,38 +1,87 @@
-import React, { useState } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [roleNames, setRoleNames] = useState([]);
 
-  const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+  const navigate = useNavigate();
+
+  const handleRoleChange = (role) => {
+    setRoleNames((prev) =>
+      prev.includes(role)
+        ? prev.filter((r) => r !== role)
+        : [...prev, role]
+    );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Registered ${formData.username}`);
-  };
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const response = await axios.post("https://springboot1-backend-1.onrender.com/api/auth/register", {
+        name,
+        email,
+        password,
+        userName,
+        roleNames,
+      });
+      console.log(response);
+      navigate("/dashboard");
+    } catch (e) {
+      console.log("Register error ", e);
+      alert("Register error!!");
+    }
+  }
 
   return (
-    <div style={{
-      maxWidth: '400px',
-      margin: '80px auto',
-      padding: '30px',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      boxShadow: '0 0 10px rgba(0,0,0,0.1)'
-    }}>
-      <h2 style={{ textAlign: 'center', color: '#28a745' }}>Register</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
-        <input name="username" type="text" placeholder="Username" onChange={handleChange} required />
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit" style={{
-          backgroundColor: '#28a745',
-          color: 'white',
-          padding: '10px',
-          border: 'none',
-          borderRadius: '4px'
-        }}>Register</button>
+    <div>
+      <h1>Register Form</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Name: </label>
+        <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
+        <br /><br />
+
+        <label htmlFor="email">Email: </label>
+        <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <br /><br />
+
+        <label htmlFor="password">Password: </label>
+        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <br /><br />
+
+        <label htmlFor="userName">Username: </label>
+        <input type="text" id="userName" value={userName} onChange={(e) => setUserName(e.target.value)} />
+        <br /><br />
+
+        <fieldset>
+          <legend>Select Roles:</legend>
+          <label>
+            <input
+              type="checkbox"
+              value="ROLE_USER"
+              checked={roleNames.includes("ROLE_USER")}
+              onChange={() => handleRoleChange("ROLE_USER")}
+            />
+            ROLE_USER
+          </label>
+          <br />
+          <label>
+            <input
+              type="checkbox"
+              value="ROLE_ADMIN"
+              checked={roleNames.includes("ROLE_ADMIN")}
+              onChange={() => handleRoleChange("ROLE_ADMIN")}
+            />
+            ROLE_ADMIN
+          </label>
+        </fieldset>
+
+        <br />
+        <button type="submit">Register</button>
       </form>
     </div>
   );
